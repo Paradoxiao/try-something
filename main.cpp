@@ -1,27 +1,32 @@
-#include <iomanip>
+#include <cstdio>
 #include <iostream>
 using namespace std;
-int i = 0;
-void my_swap(int &a, int &b) {
-  int temp = a;
-  a = b, b = temp;
-}
-void my_permute(int *arr, int n, int k) {
-  if (k == n) {
-    cout << setw(3) << setfill(' ') << ++i << ": ";
-    for (int i = 0; i < n; i++)
-      cout << arr[i] << " ";
-    cout << endl;
+int n, a[500010], c[500010];
+long long ans;
+void msort(int b, int e) // 归并排序
+{
+  if (b == e)
     return;
-  }
-  for (int i = k; i < n; i++) {
-    my_swap(arr[k], arr[i]);
-    my_permute(arr, n, k + 1);
-    my_swap(arr[k], arr[i]);
-  }
+  int mid = (b + e) / 2, i = b, j = mid + 1, k = b;
+  msort(b, mid), msort(mid + 1, e);
+  while (i <= mid && j <= e)
+    if (a[i] <= a[j])
+      c[k++] = a[i++];
+    else
+      c[k++] = a[j++], ans += mid - i + 1; // 统计答案
+  while (i <= mid)
+    c[k++] = a[i++];
+  while (j <= e)
+    c[k++] = a[j++];
+  for (int l = b; l <= e; l++)
+    a[l] = c[l];
 }
+
 int main() {
-  int arr[] = {1, 2, 3, 4};
-  my_permute(arr, 4, 0);
+  scanf("%d", &n);
+  for (int i = 1; i <= n; i++)
+    scanf("%d", &a[i]);
+  msort(1, n);
+  printf("%lld", ans);
   return 0;
 }
