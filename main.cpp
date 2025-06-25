@@ -1,32 +1,16 @@
-#include <cstdio>
+#include <chrono>
 #include <iostream>
+#include <random>
+#include <string>
 using namespace std;
-int n, a[500010], c[500010];
-long long ans;
-void msort(int b, int e) // 归并排序
-{
-  if (b == e)
-    return;
-  int mid = (b + e) / 2, i = b, j = mid + 1, k = b;
-  msort(b, mid), msort(mid + 1, e);
-  while (i <= mid && j <= e)
-    if (a[i] <= a[j])
-      c[k++] = a[i++];
-    else
-      c[k++] = a[j++], ans += mid - i + 1; // 统计答案
-  while (i <= mid)
-    c[k++] = a[i++];
-  while (j <= e)
-    c[k++] = a[j++];
-  for (int l = b; l <= e; l++)
-    a[l] = c[l];
-}
-
 int main() {
-  scanf("%d", &n);
-  for (int i = 1; i <= n; i++)
-    scanf("%d", &a[i]);
-  msort(1, n);
-  printf("%lld", ans);
+  mt19937 r(chrono::high_resolution_clock::now().time_since_epoch().count());
+  for (int i = 0; i < 10; i++) {
+    int j = r() % 100;
+    cout << j << endl;
+    for (int i = 0; i < j; i++)
+      cout << r() % 2147483647 << " ";
+    cout << endl;
+  }
   return 0;
 }
